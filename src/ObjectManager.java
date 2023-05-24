@@ -1,4 +1,5 @@
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
@@ -8,6 +9,7 @@ public class ObjectManager implements ActionListener{
     public ArrayList<Projectile> projs;
     public ArrayList<Alien> aliens;
     public Random rand;
+    public int score;
     
 
     
@@ -16,16 +18,16 @@ public class ObjectManager implements ActionListener{
         this.projs = new ArrayList<>();
         this.aliens = new ArrayList<>();
         this.rand = new Random();
-        aliens.add(new Alien(rand.nextInt(LeagueInvaders.WIDTH),0,50,50));
+        addAlien(new Alien(rand.nextInt(LeagueInvaders.WIDTH),0,50,50));
+        this.score = 0;
 
 
 
     }
 
-    // @Override
-    public void actionPerformed(){
-        Alien a = new Alien(20,20 ,50 , 50);
-        addAlien(a);
+    @Override
+    public void actionPerformed(ActionEvent e){
+        addAlien(new Alien(rand.nextInt(LeagueInvaders.WIDTH),0,50,50));
     }
 
     
@@ -41,22 +43,15 @@ public class ObjectManager implements ActionListener{
 
     public void update(){
         for (Alien a :aliens){
-            if (a.y < LeagueInvaders.HEIGHT){
-                a.update();
-            }
-            else{
-                a.isactive = false;
-            }
+            a.update();
         }
 
         for (Projectile p :projs){
-            if (p.y < LeagueInvaders.HEIGHT){
-                p.update();
-            }
-            else{
-                p.isactive = false;
-            }
+            p.update();   
         }
+
+        checkcollision();
+        purge();
     }
 
     public void draw(Graphics g){
@@ -86,6 +81,23 @@ public class ObjectManager implements ActionListener{
         }
         projs.removeAll(badp);
     }
+
+    public void checkcollision(){
+        for (Alien a: aliens){
+            for (Projectile p: projs){
+                if (a.rect.intersects(p.rect)){
+                    a.isactive = false;
+                    p.isactive = false;
+                    score += 1;
+                }
+            }
+            if (a.rect.intersects(rocket.rect)){
+                a.isactive = false;
+                rocket.isactive = false;
+            }
+        }
+    }
+
 
 
 }

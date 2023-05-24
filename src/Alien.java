@@ -9,7 +9,7 @@ public class Alien extends GameObject{
 
     public Alien(int x, int y, int width, int height){
         super(x,y,width,height);
-        this.speed = 1;
+        this.speed = 2;
         if (needImage) {
             loadImage ("alien.png");
         }
@@ -17,19 +17,18 @@ public class Alien extends GameObject{
     }
 
     public void draw(Graphics g){
-        g.setColor(Color.YELLOW);
-        g.fillRect(x, y, width, height);
 
-        // if (gotImage) {
-        //     g.drawImage(image, x, y, width, height, null);
-        // } else {
-        //     g.setColor(Color.YELLOW);
-        //     g.fillRect(x, y, width, height);
-        // }
+        if (gotImage) {
+            g.drawImage(image, x, y, width, height, null);
+        } else {
+            g.setColor(Color.YELLOW);
+            g.fillRect(x, y, width, height);
+        }
     }
 
-    public void update(Graphics g){
+    public void update(){
         y += speed;
+        super.update();
     }
 
     public void loadImage(String imageFile) {

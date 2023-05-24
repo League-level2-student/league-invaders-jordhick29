@@ -1,3 +1,5 @@
+import java.awt.Rectangle;
+
 public class GameObject {
     int x;
     int y;
@@ -5,6 +7,7 @@ public class GameObject {
     int height;
     int speed;
     boolean isactive;
+    Rectangle rect;
 
     public GameObject(int x, int y, int width, int height){
         this.x = x;
@@ -13,10 +16,11 @@ public class GameObject {
         this.height = height;
         this.speed = 0;
         this.isactive = true;
+        this.rect = new Rectangle(x,y,width,height);
     }
 
     public void update(){
-
+        rect.setBounds(x,y,width,height);
     }
 
     

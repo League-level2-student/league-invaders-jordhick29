@@ -9,21 +9,21 @@ public class RocketShip extends GameObject{
     
     public RocketShip(int x, int y, int width, int height){
         super(x,y,width,height);
-        this.speed = 10;
+        this.speed = 30;
         if (needImage) {
             loadImage ("rocket.png");
         }
     }
 
     public void draw(Graphics g){
-        g.setColor(Color.BLUE);
+        super.update();
+
+        if (gotImage) {
+            g.drawImage(image, x, y, width, height, null);
+        } else {
+            g.setColor(Color.BLUE);
             g.fillRect(x, y, width, height);
-        // if (gotImage) {
-        //     g.drawImage(image, x, y, width, height, null);
-        // } else {
-        //     g.setColor(Color.BLUE);
-        //     g.fillRect(x, y, width, height);
-        // }
+        }
     }
 
     public Projectile getpProjectile(){

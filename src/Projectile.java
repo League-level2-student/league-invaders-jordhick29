@@ -17,19 +17,20 @@ public class Projectile extends GameObject{
     }
 
     public void draw(Graphics g){
-        g.setColor(Color.RED);
-        g.fillRect(x, y, width, height);
+        System.out.println(y);
 
-        // if (gotImage) {
-        //     g.drawImage(image, x, y, width, height, null);
-        // } else {
-        //     g.setColor(Color.RED);
-        //     g.fillRect(x, y, width, height);
-        // }
+        if (gotImage) {
+            g.drawImage(image, x, y, width, height, null);
+        } else {
+            g.setColor(Color.RED);
+            g.fillRect(x, y, width, height);
+        }
     }
 
-    public void update(Graphics g){
+    public void update(){
+        System.out.println("asdasdsadasdasd");
         y -= speed;
+        super.update();
     }
 
     public void loadImage(String imageFile) {

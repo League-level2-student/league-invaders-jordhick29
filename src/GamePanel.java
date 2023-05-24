@@ -21,7 +21,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
    public Font titleFont;
    public GamePanel(){
       this.titleFont = new Font("Arial",Font.PLAIN,48);
-      this.frameDraw = new Timer(20,this);
+      this.frameDraw = new Timer(10,this);
       this.rocket = new RocketShip(250, 700, 50, 50);
       this.manager = new ObjectManager(rocket);
       frameDraw.start();
@@ -34,6 +34,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
    }
    public void updateGameState() { 
       manager.update();
+      if (!rocket.isactive){
+         System.out.println("game over");
+         currentState = END;
+     }
 
    }
    public void updateEndState()  {
@@ -67,6 +71,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
        if (e.getKeyCode()==KeyEvent.VK_ENTER) {
          if (currentState == END) {
              currentState = MENU;
+             rocket = new RocketShip(250, 700, 50, 50);
+             manager = new ObjectManager(rocket);
+
          } 
          else if (currentState == MENU) {
             currentState = GAME;
@@ -120,23 +127,25 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
       g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
       g.setFont(titleFont);
       g.setColor(Color.YELLOW);
-      g.drawString("menu state text", 0, 0);
+      g.drawString("ENTER to play", 100, 300);
+      g.drawString("LEAGUE INVADERS", 30, 150);
 
    }
+
    public void drawGameState(Graphics g) {  
       g.setColor(Color.BLACK);
       g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
       manager.draw(g);
-
-
-
    }
+
    public void drawEndState(Graphics g)  { 
       g.setColor(Color.RED);
       g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
       g.setFont(titleFont);
-      g.setColor(Color.YELLOW);
-      g.drawString("end state text", 0, 0);
+      g.setColor(Color.BLUE);
+      g.drawString("LEAGUE INVADERS", 30, 150);
+      g.drawString("score = " + manager.score, 100, 450);
+      g.drawString("ENTER to continue", 25, 600);
 
    }
 
