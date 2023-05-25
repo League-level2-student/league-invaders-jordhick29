@@ -6,10 +6,16 @@ public class RocketShip extends GameObject{
     public static BufferedImage image;
     public static boolean needImage = true;
     public static boolean gotImage = false;	
+    public static final int KILLAMMO = 3;
+    public static final int STARTAMMO = 10;
+    public static final int MAXAMMO = 20;
+    public static final int HITAMMO = 1;
+    public int ammo;
     
     public RocketShip(int x, int y, int width, int height){
         super(x,y,width,height);
         this.speed = 30;
+        this.ammo = STARTAMMO;
         if (needImage) {
             loadImage ("rocket.png");
         }

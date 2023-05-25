@@ -17,8 +17,6 @@ public class Projectile extends GameObject{
     }
 
     public void draw(Graphics g){
-        System.out.println(y);
-
         if (gotImage) {
             g.drawImage(image, x, y, width, height, null);
         } else {
@@ -28,7 +26,6 @@ public class Projectile extends GameObject{
     }
 
     public void update(){
-        System.out.println("asdasdsadasdasd");
         y -= speed;
         super.update();
     }

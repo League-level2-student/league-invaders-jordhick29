@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.lang.Math;
 
 import javax.swing.Timer;
 import java.awt.event.KeyListener;
@@ -35,7 +36,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
    public void updateGameState() { 
       manager.update();
       if (!rocket.isactive){
-         System.out.println("game over");
          currentState = END;
      }
 
@@ -101,7 +101,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
       rocket.left();
       }
 
-      else if (e.getKeyCode() == KeyEvent.VK_SPACE){
+      else if (e.getKeyCode() == KeyEvent.VK_SPACE && rocket.ammo > 0){
+         rocket.ammo = Math.min(rocket.ammo - 1, RocketShip.MAXAMMO);
          manager.addProjectile(rocket.getpProjectile());
 
       }

@@ -6,10 +6,12 @@ public class Alien extends GameObject{
     public static BufferedImage image;
     public static boolean needImage = true;
     public static boolean gotImage = false;
+    public int health;
 
     public Alien(int x, int y, int width, int height){
         super(x,y,width,height);
-        this.speed = 2;
+        this.speed = 3;
+        this.health = 3;
         if (needImage) {
             loadImage ("alien.png");
         }

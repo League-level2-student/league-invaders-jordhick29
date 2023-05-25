@@ -22,7 +22,5 @@ public class GameObject {
     public void update(){
         rect.setBounds(x,y,width,height);
     }
-
-    
-    
+  
 }
