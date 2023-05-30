@@ -9,41 +9,38 @@ import java.lang.Math;
 public class ObjectManager implements ActionListener{
     public RocketShip rocket;
     public ArrayList<Projectile> projs;
-    public ArrayList<Alien> aliens;
-    public ArrayList<Alien2> alien2s;
-    public final static double ALIEN2PROB = 0.35;
-
+    public ArrayList<AbstractAlien> aliens;
     public Random rand;
     public int score;
     public static final int SECPERAMMO = 3;
     public int progress;
+    public ArrayList<Integer> choices;
 
-    
+
     public ObjectManager(RocketShip r){
-        this.rocket = r;
-        this.projs = new ArrayList<>();
-        this.aliens = new ArrayList<>();
-        this.alien2s = new ArrayList<>();
-
-        this.rand = new Random();
-        addAlien(new Alien(rand.nextInt(LeagueInvaders.WIDTH),0,50,50));
-        addAlien2(new Alien2(rand.nextInt(LeagueInvaders.WIDTH),0,50,50));
-        this.score = 0;
-        this.progress = 0;
+        choices = new ArrayList<>();
+        rocket = r;
+        projs = new ArrayList<>();
+        aliens = new ArrayList<>();
+        rand = new Random();
+        score = 0;
+        progress = 0;
+        for (int i = 0; i < JiggleAlien.WEIGHT; i++){
+            choices.add(JiggleAlien.ID);
+        }
+        for (int i = 0; i < BasicAlien.WEIGHT; i++){
+            choices.add(BasicAlien.ID);
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e){
         progress += 1;
-        if (progress % SECPERAMMO == 0){
+        if (progress == SECPERAMMO){
             rocket.ammo += 1;
+            progress = 0;
         }
-        if (Math.random() > ALIEN2PROB){
-            addAlien(new Alien(rand.nextInt(LeagueInvaders.WIDTH),0,50,50));
-
-        }else{
-        addAlien2(new Alien2(rand.nextInt(LeagueInvaders.WIDTH),0,50,50));
-        }
+        spawnAlien();
     }
 
     
@@ -52,24 +49,24 @@ public class ObjectManager implements ActionListener{
     public void addProjectile(Projectile p ){
         projs.add(p);
     }
-    public void addAlien(Alien a){
-        aliens.add(a);
-    }
-    public void addAlien2(Alien2 a){
-        alien2s.add(a);
+    public void spawnAlien(){
+        Integer classid =  choices.get((int) (Math.random() * choices.size()));
+        if (classid == JiggleAlien.ID){
+            aliens.add(JiggleAlien.spawn());
+        }
+        else if (classid == BasicAlien.ID){
+            aliens.add(BasicAlien.spawn());
+        }
+        
     }
 
     public void update(){
-        for (Alien a :aliens){
+        for (AbstractAlien a :aliens){
             a.update();
         }
 
         for (Projectile p :projs){
             p.update();   
-        }
-
-        for (Alien2 a2: alien2s){
-            a2.update();
         }
 
         checkcollision();
@@ -80,30 +77,18 @@ public class ObjectManager implements ActionListener{
         for (Projectile p: projs){
             p.draw(g);
         }
-        for (Alien a: aliens){
+        for (AbstractAlien a: aliens){
             a.draw(g);
         }
 
-        for (Alien2 a2: alien2s){
-            a2.draw(g);
-        }
         rocket.draw(g);
         g.setColor(Color.BLUE);
         g.drawString("ammo: " + rocket.ammo, 5, LeagueInvaders.HEIGHT - 8);
     }
 
     public void purge(){
-        ArrayList<Alien2> bada2 = new ArrayList<>();
-        for (Alien2 a :alien2s){
-            if (! a.isactive){
-                bada2.add(a);
-            }
-        }
-        alien2s.removeAll(bada2);
-
-
-        ArrayList<Alien> bada = new ArrayList<>();
-        for (Alien a :aliens){
+        ArrayList<AbstractAlien> bada = new ArrayList<>();
+        for (AbstractAlien a :aliens){
             if (! a.isactive){
                 bada.add(a);
             }
@@ -121,28 +106,7 @@ public class ObjectManager implements ActionListener{
     }
 
     public void checkcollision(){
-        for (Alien2 a2: alien2s){
-            for (Projectile p: projs){
-                if (a2.rect.intersects(p.rect)){
-                    p.isactive = false;
-                    if (a2.health > 1){
-                        a2.health -= 1;    
-                        rocket.ammo += RocketShip.HITAMMO;
-                    } else {
-                        score += 1;
-                        a2.isactive = false;
-                        rocket.ammo += RocketShip.KILLAMMO;
-                    }
-                }
-            }
-            if (a2.rect.intersects(rocket.rect)){
-                a2.isactive = false;
-                rocket.isactive = false;
-            }
-        }
-    
-
-        for (Alien a: aliens){
+        for (AbstractAlien a: aliens){
             for (Projectile p: projs){
                 if (a.rect.intersects(p.rect)){
                     p.isactive = false;
@@ -161,6 +125,8 @@ public class ObjectManager implements ActionListener{
                 rocket.isactive = false;
             }
         }
+    
+
     }
 
 }

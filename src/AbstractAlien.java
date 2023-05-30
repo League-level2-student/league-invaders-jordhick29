@@ -2,24 +2,26 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-public class Alien extends GameObject{
+import java.util.Random;
+
+public class AbstractAlien extends GameObject{
     public static BufferedImage image;
     public static boolean needImage = true;
     public static boolean gotImage = false;
+    public static final Random rand = new Random();
     public int health;
+    public int speed;
 
-    public Alien(int x, int y, int width, int height){
-        super(x,y,width,height);
-        this.speed = 3;
-        this.health = 3;
+
+    public AbstractAlien(int x, int y, int width, int height, int health){
+        super(x, y, width, height);
+        this.health = health;
         if (needImage) {
-            loadImage ("alien.png");
+            loadImage("alien.png");
         }
-        
     }
 
     public void draw(Graphics g){
-
         if (gotImage) {
             g.drawImage(image, x, y, width, height, null);
         } else {
@@ -29,7 +31,6 @@ public class Alien extends GameObject{
     }
 
     public void update(){
-        y += speed;
         super.update();
     }
 
